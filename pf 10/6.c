@@ -1,32 +1,46 @@
 #include <stdio.h>
+#include <string.h>
 
 int main() {
-    char names[5][20] = {"Alice", "Bob", "Charlie", "Diana", "Eve"};
-    int marks[5] = {85, 92, 78, 96, 88};
+    // Number of students
+    int n = 5;
 
-    int i;
-    int highestIndex = 0;
-    float sum = 0;
+    // Array of student names (strings)
+    char students[5][50] = {"Alice", "Bob", "Charlie", "David", "Eva"};
+    
+    // Array of marks corresponding to students
+    int marks[5] = {85, 92, 78, 88, 95};
 
-    printf("Student Marks:\n");
+    // Display header
+    printf("Student Marks Table\n");
     printf("-----------------------------\n");
-    printf("%-10s  %s\n", "Name", "Marks");
+    printf("%-10s | %s\n", "Name", "Marks");
     printf("-----------------------------\n");
 
-    for (i = 0; i < 5; i++) {
-        printf("%-10s  %d\n", names[i], marks[i]);
-
-        sum += marks[i];
-
-        if (marks[i] > marks[highestIndex])
-            highestIndex = i;
+    for(int i = 0; i < n; i++) {
+        printf("%-10s | %d\n", students[i], marks[i]);
     }
 
-    float average = sum / 5.0;
+    printf("-----------------------------\n");
 
-    printf("\nTop Student: %s with %d marks\n", names[highestIndex], marks[highestIndex]);
+    // Find top student
+    int maxIndex = 0;
+    int total = 0;
+
+    for(int i = 0; i < n; i++) {
+        if(marks[i] > marks[maxIndex])
+            maxIndex = i;
+        total += marks[i];
+    }
+
+    // Calculate class average
+    float average = total / (float)n;
+
+    printf("Top Student: %s with %d marks\n", students[maxIndex], marks[maxIndex]);
     printf("Class Average: %.2f\n", average);
 
     return 0;
 }
+
+
 
