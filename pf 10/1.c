@@ -1,35 +1,46 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 
 int main() {
-    char pass[100];
-    int i, len = 0;
-    int upper = 0, digit = 0, special = 0;
+    char password[100];
+    int hasUpper = 0, hasDigit = 0, hasSpecial = 0;
 
     printf("Enter password: ");
-    scanf("%s", pass);
+    fgets(password, sizeof(password), stdin);
 
-    for (i = 0; pass[i] != '\0'; i++) {
-        char c = pass[i];
-        len++;
+    // remove newline from fgets
+    password[strcspn(password, "\n")] = '\0';
 
-       
-        if (c >= 'A' && c <= 'Z')
-            upper = 1;
-
-       
-        if (c >= '0' && c <= '9')
-            digit = 1;
-
-     
-        if (c == '!' || c == '@' || c == '#' || c == '$' || c == '%')
-            special = 1;
+    // Rule 1: Check length
+    if (strlen(password) < 8) {
+        printf("Password is too short! Must be at least 8 characters.\n");
+        return 0;
     }
 
-    if (len >= 8 && upper && digit && special)
-        printf("Password is strong.\n");
-    else
-        printf("Password is weak.\n");
+    // Check other rules
+    for (int i = 0; password[i] != '\0'; i++) {
+        if (isupper(password[i]))
+            hasUpper = 1;
+        else if (isdigit(password[i]))
+            hasDigit = 1;
+        else if (password[i] == '!' || password[i] == '@' || password[i] == '#'
+                 || password[i] == '$' || password[i] == '%')
+            hasSpecial = 1;
+    }
+
+    // Final validation
+    if (hasUpper && hasDigit && hasSpecial) {
+        printf("Password is strong!\n");
+    } else {
+        printf("Password is weak! It must contain:\n");
+        if (!hasUpper) printf("- At least one uppercase letter\n");
+        if (!hasDigit) printf("- At least one digit\n");
+        if (!hasSpecial) printf("- At least one special character (!,@,#,$,%)\n");
+    }
 
     return 0;
 }
+
+
 
