@@ -1,53 +1,39 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 
 int main() {
-    char msg[200] = "Meet me at the park tomorrow";
-    int i;
+    char message[200];
+    char encrypted[200];
 
-    printf("Original: %s\n", msg);
+    printf("Enter a message to encrypt: ");
+    fgets(message, sizeof(message), stdin);
 
-   
-    for (i = 0; msg[i] != '\0'; i++) {
-        char c = msg[i];
+    // Remove newline if present
+    message[strcspn(message, "\n")] = '\0';
 
-       
-        if (c >= 'a' && c <= 'z') {
-            c = c + 3;
-            if (c > 'z')
-                c = c - 26;
+    for (int i = 0; i < strlen(message); i++) {
+        char ch = message[i];
+
+        if (isalpha(ch)) {
+            // Shift uppercase letters
+            if (isupper(ch))
+                encrypted[i] = ((ch - 'A' + 3) % 26) + 'A';
+            // Shift lowercase letters
+            else
+                encrypted[i] = ((ch - 'a' + 3) % 26) + 'a';
+        } else {
+            // Non-letter characters stay the same
+            encrypted[i] = ch;
         }
-        
-        else if (c >= 'A' && c <= 'Z') {
-            c = c + 3;
-            if (c > 'Z')
-                c = c - 26;
-        }
-
-        msg[i] = c;
     }
 
-    printf("Encrypted: %s\n", msg);
+    encrypted[strlen(message)] = '\0'; // Null-terminate the string
 
-   
-    for (i = 0; msg[i] != '\0'; i++) {
-        char c = msg[i];
-
-        if (c >= 'a' && c <= 'z') {
-            c = c - 3;
-            if (c < 'a')
-                c = c + 26;
-        }
-        else if (c >= 'A' && c <= 'Z') {
-            c = c - 3;
-            if (c < 'A')
-                c = c + 26;
-        }
-
-        msg[i] = c;
-    }
-
-    printf("Decrypted: %s\n", msg);
+    printf("Encrypted message: %s\n", encrypted);
 
     return 0;
 }
+
+
 
